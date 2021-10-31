@@ -4,7 +4,8 @@ import "components/Application.scss";
 import DayList from "./DayList";
 import { useState } from "react";
 import Appointment from "components/Appointment/index.js";
-
+import { useEffect } from "react";
+import axios from 'axios';
 
 
 //mock data for appointments
@@ -47,27 +48,45 @@ const appointments = [
   }
 ];
 
-//mock data from DayList stories.
-const days = [
-  {
-    id: 1,
-    name: "Monday",
-    spots: 2,
-  },
-  {
-    id: 2,
-    name: "Tuesday",
-    spots: 5,
-  },
-  {
-    id: 3,
-    name: "Wednesday",
-    spots: 0,
-  },
-];
+// //mock data from DayList stories.
+// const days = [
+//   {
+//     id: 1,
+//     name: "Monday",
+//     spots: 2,
+//   },
+//   {
+//     id: 2,
+//     name: "Tuesday",
+//     spots: 5,
+//   },
+//   {
+//     id: 3,
+//     name: "Wednesday",
+//     spots: 0,
+//   },
+// ];
+
 
 
 export default function Application(props) {
+
+  const [days, setDays] = useState([]);
+
+  useEffect(() => {
+  axios.get(`http://localhost:8001/api/days`)
+  .then(res => {
+    console.log(res);
+    setDays(res.data);
+  })
+  
+  },[])
+
+  const changeDay = (day) => {
+    console.log(day);
+    setDay(day);
+
+  };
 
   const [day, setDay] = useState("Monday")
   
@@ -81,7 +100,9 @@ export default function Application(props) {
 />
 <hr className="sidebar__separator sidebar--centered" />
 <nav className="sidebar__menu">
-   <DayList days={days} value={day} onChange={setDay} />
+   <DayList days={days} 
+   value={day} 
+   onChange={changeDay} />
 </nav>
 <img
   className="sidebar__lhl sidebar--centered"
