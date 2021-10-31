@@ -48,47 +48,28 @@ const appointments = [
   }
 ];
 
-// //mock data from DayList stories.
-// const days = [
-//   {
-//     id: 1,
-//     name: "Monday",
-//     spots: 2,
-//   },
-//   {
-//     id: 2,
-//     name: "Tuesday",
-//     spots: 5,
-//   },
-//   {
-//     id: 3,
-//     name: "Wednesday",
-//     spots: 0,
-//   },
-// ];
-
 
 
 export default function Application(props) {
 
-  const [days, setDays] = useState([]);
+  const [state, setState] = useState({
+    day: "Monday",
+    days: [],
+    appointments: {}
+  });
+
+  
+  const setDay = day => setState({...state, day});
+  const setDays = days => setState(prev => ({ ...prev, days}));
 
   useEffect(() => {
   axios.get(`http://localhost:8001/api/days`)
   .then(res => {
-    console.log(res);
     setDays(res.data);
   })
   
   },[])
 
-  const changeDay = (day) => {
-    console.log(day);
-    setDay(day);
-
-  };
-
-  const [day, setDay] = useState("Monday")
   
   return (
     <main className="layout">
@@ -100,9 +81,9 @@ export default function Application(props) {
 />
 <hr className="sidebar__separator sidebar--centered" />
 <nav className="sidebar__menu">
-   <DayList days={days} 
-   value={day} 
-   onChange={changeDay} />
+   <DayList days={state.days} 
+   value={state.day} 
+   onChange={setDay} />
 </nav>
 <img
   className="sidebar__lhl sidebar--centered"

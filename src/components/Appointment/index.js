@@ -4,14 +4,15 @@ import "components/Appointment/styles.scss";
 import Header from "./Header";
 import Show from "./Show";
 import Empty from "./Empty";
-import { PROPERTY_TYPES } from "@babel/types";
 
+//is this necessary? i think its broken.
 const appointmentMsg = function(props) {
   const time = props.time;
   let returnStr = '';
   if (!time) {
     returnStr = `No appointments`
   } else {
+    //appointment at 
     returnStr = `Appointment at ${time}`
   }
   return returnStr;
