@@ -6,7 +6,7 @@ import { useState } from "react";
 import Appointment from "components/Appointment/index.js";
 import { useEffect } from "react";
 import axios from 'axios';
-import { getAppointmentsForDay } from "helpers/selectors";
+import { getAppointmentsForDay, getInterview } from "helpers/selectors";
 
 
 
@@ -27,10 +27,10 @@ export default function Application(props) {
     Promise.all([
     axios.get(`http://localhost:8001/api/days`),
     axios.get('http://localhost:8001/api/appointments'),
-    // axios.get('http://localhost:8001/api/interviewers')
+    axios.get('http://localhost:8001/api/interviewers')
     ])
     .then(res => {
-      setState(prev => ({...prev, days: res[0].data, appointments: res[1].data }));
+      setState(prev => ({...prev, days: res[0].data, appointments: res[1].data, interviewers: res[2].data }));
     })
     
     },[])
@@ -58,10 +58,9 @@ export default function Application(props) {
 />
       </section>
       <section className="schedule">
-
-        {/* Replace this with the schedule elements durint the "The Scheduler" activity. */}
        
-        {dailyAppointments.map((appointment) => <Appointment key={appointment.id} id={appointment.id} time={appointment.time} interview={appointment.interview} />
+        {dailyAppointments.map((appointment) => 
+        <Appointment key={appointment.id} id={appointment.id} time={appointment.time} interview={getInterview(state, appointment.interview)} />
         
         )}
         <Appointment key="last" time="5pm" />
