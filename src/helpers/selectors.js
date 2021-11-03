@@ -30,5 +30,16 @@ export function getInterview(state, interview) {
       interviewer: state.interviewers[interview.interviewer]
     }
   )
+}
 
+// takes the state and a day and gets all the interviewers for that day
+export function getInterviewersForDay(state, day) {
+  // state.days is an array of days
+  let intArr = [];
+  for (let date of state.days) {
+    if (date.id === day) {
+      intArr = date.interviewers;
+    }
+  }
+return intArr;
 }

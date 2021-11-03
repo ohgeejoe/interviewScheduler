@@ -6,8 +6,7 @@ import { useState } from "react";
 import Appointment from "components/Appointment/index.js";
 import { useEffect } from "react";
 import axios from 'axios';
-import { getAppointmentsForDay, getInterview } from "helpers/selectors";
-
+import { getAppointmentsForDay, getInterview, getInterviewersForDay} from "helpers/selectors";
 
 
 export default function Application(props) {
@@ -60,7 +59,13 @@ export default function Application(props) {
       <section className="schedule">
        
         {dailyAppointments.map((appointment) => 
-        <Appointment key={appointment.id} id={appointment.id} time={appointment.time} interview={getInterview(state, appointment.interview)} />
+        <Appointment 
+        key={appointment.id} 
+        id={appointment.id} 
+        time={appointment.time} 
+        interview={getInterview(state, appointment.interview)} 
+        interviews={getInterviewersForDay(state, state.day)}
+        />
         
         )}
         <Appointment key="last" time="5pm" />

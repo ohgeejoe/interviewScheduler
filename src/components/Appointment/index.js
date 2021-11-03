@@ -4,27 +4,50 @@ import "components/Appointment/styles.scss";
 import Header from "./Header";
 import Show from "./Show";
 import Empty from "./Empty";
+import Form from "./Form";
+import useVisualMode from "hooks/useVisualMode";
 
-//is this necessary? i think its broken.
-const appointmentMsg = function(props) {
+//mode constats
+const EMPTY = "EMPTY";
+const SHOW = "SHOW";
+const CREATE = "CREATE;"
+
+const appointmentMsg = function (props) {
   const time = props.time;
   let returnStr = '';
   if (!time) {
     returnStr = `No appointments`
   } else {
-    //appointment at 
+    //"appointment at" text
     returnStr = `Appointment at ${time}`
   }
   return returnStr;
 }
 
 export default function Appointment(props) {
+
+  const { mode, transition, back } = useVisualMode(
+    props.interview ? SHOW : EMPTY
+  );
   const message = appointmentMsg(props)
   return (
     <article className="appointment">{message}
-    <Header time={props.time}/>
-    {props.interview && <Show student={props.interview && props.interview.student}  interviewer={props.interview.interviewer}/>}
-     {!props.interview && <Empty />}
+      {mode === EMPTY && <Empty onAdd={() => transition(CREATE)} />}
+      {mode === SHOW && (
+        <Show
+          student={props.interview.student}
+          interviewer={props.interview.interviewer}
+        />
+      )}
+
+      {mode === CREATE && (
+        <Form
+          interviewers={[]}
+          onCancel={back}
+
+        />
+      )}
+
     </article>
   );
 }
