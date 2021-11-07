@@ -1,6 +1,6 @@
 # Interview Scheduler
 
-!(https://raw.githubusercontent.com/ohgeejoe/interviewScheduler/master/public/screenshot.png)
+![alt text](https://raw.githubusercontent.com/ohgeejoe/interviewScheduler/master/public/screenshot.png)
 
 
 ## Setup
