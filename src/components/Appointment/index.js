@@ -7,6 +7,7 @@ import Form from "./Form";
 import Confirm from "./Confirm";
 import useVisualMode from "hooks/useVisualMode";
 import Status from "./Status";
+import Error from "./Error";
 
 //mode constants
 const EMPTY = "EMPTY";
@@ -15,6 +16,8 @@ const CREATE = "CREATE";
 const SAVING = "SAVING";
 const CONFIRM = "CONFIRM";
 const EDIT = "EDIT";
+const ERROR_SAVE = "ERROR_SAVE";
+const ERROR_DELETE = "ERROR_DELETE";
 
 const appointmentMsg = function (props) {
   const time = props.time;
@@ -42,8 +45,7 @@ export default function Appointment(props) {
     .then(() => transition(SHOW))
     //what to write in the catch? goes back to CREATE for now.
     .catch((err) => {
-    console.log("ERROR BABY!", err);
-    transition(CREATE);
+      transition(ERROR_DELETE,true)
   })
   }
   
@@ -102,6 +104,12 @@ export default function Appointment(props) {
       onCancel={back}
       onSave={save}
     />}
+
+      {mode === ERROR_SAVE && 
+      <Error onClose={() => transition(SHOW)} message={"Error saving"}/>} 
+
+      {mode === ERROR_DELETE && 
+      <Error onClose={() => transition(SHOW)} message={"Error deleting"}/>} 
 
     </article>
   );
