@@ -14,6 +14,7 @@ const SHOW = "SHOW";
 const CREATE = "CREATE";
 const SAVING = "SAVING";
 const CONFIRM = "CONFIRM";
+const EDIT = "EDIT";
 
 const appointmentMsg = function (props) {
   const time = props.time;
@@ -50,7 +51,6 @@ export default function Appointment(props) {
     transition(CONFIRM);
   }
 
-
   const { mode, transition, back } = useVisualMode(
     props.interview ? SHOW : EMPTY
   );
@@ -63,6 +63,7 @@ export default function Appointment(props) {
           student={props.interview.student}
           interviewer={props.interview.interviewer}
           onDelete={deleteButton}
+          onEdit={() => transition(EDIT)}
         />
       )}
 
@@ -70,7 +71,6 @@ export default function Appointment(props) {
         <Form
           name={props.name}
           interviewer={props.interviewer}
-          // am i passing interviewers correctly?
           interviewers={props.interviewers}
           onCancel={back}
           onSave={save}
@@ -93,6 +93,15 @@ export default function Appointment(props) {
         }
         />
       )}
+
+      {mode === EDIT && 
+      <Form 
+      name={props.name}
+      interviewer={props.interviewer}
+      interviewers={props.interviewers}
+      onCancel={back}
+      onSave={save}
+    />}
 
     </article>
   );

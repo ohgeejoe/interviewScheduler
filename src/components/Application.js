@@ -31,6 +31,29 @@ export default function Application(props) {
   })
 };
 
+function editInterview(id, interview) {
+
+  const appointment = {
+    ...state.appointments[id],
+    interview: { ...interview }
+  };
+
+  const appointments = {
+    ...state.appointments,
+    [id]: appointment
+  };
+
+  setState({
+    ...state,
+    appointments
+  });
+
+  return axios.put(`http://localhost:8001/api/appointments/${id}`, {
+    ...state.appointments[id],
+    interview: { ...interview }
+  })
+}
+
   const [state, setState] = useState({
     day: "Monday",
     days: [],
@@ -111,6 +134,7 @@ export default function Application(props) {
         interviewers={getInterviewersForDay(state, state.day)}
         bookInterview={bookInterview}
         cancelInterview={cancelInterview}
+        editInterview={editInterview}
         />
         
         )}
