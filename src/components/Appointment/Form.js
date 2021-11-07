@@ -6,6 +6,7 @@ import InterviewerList from "components/InterviewerList";
 export default function Form(props) {
   const [name, setName] = useState(props.name || "");
   const [interviewer, setInterviewer] = useState(props.interviewer || null);
+  const [error, setError] = useState("");
 
 
   function reset() {
@@ -13,10 +14,22 @@ export default function Form(props) {
     setInterviewer(null);
   }
 
+  //intermediate function/form cleanup. need to implement the reset (clear form) before moving on to the onCancel.
   function cancel() {
     reset();
     props.onCancel();
   }
+
+  //for form button
+  function validate() {
+    if (name === "") {
+      setError("Student name cannot be blank");
+      return;
+    }
+    setError("");
+    props.onSave(name, interviewer);
+  }
+
 
   return(
 <main className="appointment__card appointment__card--create">
@@ -40,7 +53,7 @@ export default function Form(props) {
   <section className="appointment__card-right">
     <section className="appointment__actions">
       <Button danger onClick={cancel}>Cancel</Button>
-      <Button confirm >Save</Button>
+      <Button confirm onClick={() => validate()}>Save</Button>
     </section>
   </section>
 </main>

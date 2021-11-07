@@ -33,13 +33,44 @@ export function getInterview(state, interview) {
 }
 
 // takes the state and a day and gets all the interviewers for that day
+// export function getInterviewersForDay(state, day) {
+//   if (state.days.length === 0) {
+//     return [];
+//   }
+
+//   if (state.days[day] === undefined) {
+//     return [];
+//   }
+//   const interviewers = state.interviewers;
+//   //need to fix
+//   const dayInterviewer = state.days[interviewers];
+//   console.log("dayinterviewers "+ dayInterviewer)
+
+//   //builds a new array.
+//   const dayInterviewers = dayInterviewer.map((interviewerID) => {
+//     return interviewers[interviewerID];
+//   })
+
+// return dayInterviewers;
+// }
+
+// takes the state and a day and gets all the interviewers for that day
 export function getInterviewersForDay(state, day) {
   // state.days is an array of days
   let intArr = [];
   for (let date of state.days) {
-    if (date.id === day) {
-      intArr = date.interviewers;
+    if (date.name === day) {
+      intArr.push(...date.interviewers);
     }
   }
-return intArr;
+
+  let interviewersArr = [];
+  for (let intObj in state.interviewers) {
+    for (let id of intArr) {
+      if (id === parseInt(intObj)) {
+        interviewersArr.push(state.interviewers[intObj])
+      }
+    }
+  }
+  return interviewersArr;
 }

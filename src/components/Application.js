@@ -11,11 +11,47 @@ import { getAppointmentsForDay, getInterview, getInterviewersForDay} from "helpe
 
 export default function Application(props) {
 
+  function cancelInterview(id) {
+    return axios.delete(`/appointments/${id}`)
+      .then(() => {
+        // interviewer = null
+      // cant "After we delete an interview, it will need to have its value set to null. If we are still in the SHOW mode and the interview isn't set to null, we may get a TypeError.""
+
+      //i think i need to setState for interviewer
+      
+      })
+  }
+
   const [state, setState] = useState({
     day: "Monday",
     days: [],
     appointments: {}
   });
+
+  function bookInterview(id, interview) {
+    console.log(id, interview);
+
+    const appointment = {
+      ...state.appointments[id],
+      interview: { ...interview }
+    };
+
+    const appointments = {
+      ...state.appointments,
+      [id]: appointment
+    };
+
+    setState({
+      ...state,
+      appointments
+    });
+
+    return axios.put(`http://localhost:8001/api/appointments/${id}`, {
+      ...state.appointments[id],
+      interview: { ...interview }
+    })
+  }
+
 
   const dailyAppointments = getAppointmentsForDay(state, state.day);
 
@@ -64,7 +100,8 @@ export default function Application(props) {
         id={appointment.id} 
         time={appointment.time} 
         interview={getInterview(state, appointment.interview)} 
-        interviews={getInterviewersForDay(state, state.day)}
+        interviewers={getInterviewersForDay(state, state.day)}
+        bookInterview={bookInterview}
         />
         
         )}
