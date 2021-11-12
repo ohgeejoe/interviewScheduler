@@ -30,7 +30,10 @@ export default function Application(props) {
     axios.get('http://localhost:8001/api/interviewers')
     ])
     .then(res => {
-      setState(prev => ({...prev, days: res[0].data, appointments: res[1].data, interviewers: res[2].data }));
+      setState(prev => ({...prev, 
+        days: res[0].data, 
+        appointments: res[1].data, 
+        interviewers: res[2].data }));
     })
     
     },[])
@@ -49,7 +52,8 @@ export default function Application(props) {
 <nav className="sidebar__menu">
    <DayList days={state.days} 
    value={state.day} 
-   onChange={setDay} />
+   onChange={setDay}
+   bookInterview={bookInterview}/>
 </nav>
 <img
   className="sidebar__lhl sidebar--centered"
@@ -69,6 +73,7 @@ export default function Application(props) {
         bookInterview={bookInterview}
         cancelInterview={cancelInterview}
         editInterview={editInterview}
+        day={state.day}
         />
         
         )}

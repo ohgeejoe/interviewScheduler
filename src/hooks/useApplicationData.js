@@ -12,6 +12,8 @@ const [state, setState] = useState({
 
 function bookInterview(id, interview) {
 
+  console.log(state);
+  
   const appointment = {
     ...state.appointments[id],
     interview: { ...interview }
@@ -22,15 +24,45 @@ function bookInterview(id, interview) {
     [id]: appointment
   };
 
+  let bookedSpots = 0;
+  let totalSpots = 0;
+  state.days.forEach(day => {
+    totalSpots++
+    if (day.name === state.day) {
+      day.appointments.forEach(
+        (app) =>
+        {
+         if (appointments[app].interview != null) {
+           bookedSpots++
+         }
+         }
+      )
+      
+    }
+  })
+
+  state.days.forEach(day => {
+    if (day.name === state.day) {
+      day.spots = totalSpots - bookedSpots
+    }
+  });
+  console.log(state.days)
+
+
   setState({
     ...state,
     appointments
   });
 
-  return axios.put(`http://localhost:8001/api/appointments/${id}`, {
+  
+
+  return axios.put(`http://localhost:8001/api/appointments/${id}`,{
+
     ...state.appointments[id],
     interview: { ...interview }
-  })
+  }
+
+  )
 }
 
 function editInterview(id, interview) {
@@ -69,6 +101,31 @@ function cancelInterview(id) {
         ...state.appointments,
         [id]: appointment
       };
+
+      let bookedSpots = 0;
+      let totalSpots = 0;
+      state.days.forEach(day => {
+      totalSpots++
+       if (day.name === state.day) {
+            day.appointments.forEach(
+            (app) =>
+        {
+         if (appointments[app].interview != null) {
+           bookedSpots++
+         }
+         }
+      )
+      
+    }
+  })
+
+  state.days.forEach(day => {
+    if (day.name === state.day) {
+      day.spots = totalSpots - bookedSpots
+    }
+  });
+  console.log(state.days)
+
 
       setState({
         ...state,

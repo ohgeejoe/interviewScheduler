@@ -42,15 +42,36 @@ export default function Appointment(props) {
     }
     props.bookInterview(props.id, interview)
     //update to .then and .catch after writing the axios put. since it is async. (connection to server takes time and could also error out).
-    .then(() => transition(SHOW))
-    //what to write in the catch? goes back to CREATE for now.
+    .then((res) => {
+      
+      transition(SHOW)
+      }
+        )
     .catch((err) => {
       transition(ERROR_DELETE,true)
   })
   }
   
+  function deleteIt() {
+    transition(SAVING);
+    props.cancelInterview(props.id)
+    .then((res) => {
+      
+      transition(EMPTY)
+      }
+        )
+    .catch((err) => {
+      transition(ERROR_DELETE,true)
+  })
+          
+}
+
+    
+
   function deleteButton() {
+  
     transition(CONFIRM);
+
   }
 
   const { mode, transition, back } = useVisualMode(
@@ -88,11 +109,7 @@ export default function Appointment(props) {
       {mode === CONFIRM && (
         <Confirm
         onCancel={back}
-        onConfirm={() => {
-          props.cancelInterview(props.id)
-          transition(EMPTY)}
-
-        }
+        onConfirm={deleteIt}
         />
       )}
 
